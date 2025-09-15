@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+
+motor
+pymongo
+
+pydantic
+python-multipart
+aiofiles
+python-dotenv
+pandas
+reportlab
+python-dateutil
+
+opencv-python-headless
+mediapipe
+numpy
