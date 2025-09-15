@@ -45,13 +45,13 @@ async def stream_ws(websocket: WebSocket):
                     if events:
                         out = []
                         for e in events:
-                            # convert datetimes to iso strings for WS message
+                            # convert datetimes and ensure JSON-safe extra
                             ev = {
                                 "candidate_id": e["candidate_id"],
                                 "event_type": e["event_type"],
                                 "confidence": e.get("confidence"),
                                 "frame_time": e.get("frame_time").isoformat() + "Z" if hasattr(e.get("frame_time"), "isoformat") else e.get("frame_time"),
-                                "extra": e.get("extra"),
+                                "extra": json.loads(json.dumps(e.get("extra"), default=str)),
                             }
                             out.append(ev)
                         await websocket.send_text(json.dumps({"candidate_id": candidate_id, "events": out}))

@@ -5,6 +5,7 @@ from reportlab.pdfgen import canvas
 from io import BytesIO
 from datetime import datetime
 from typing import List, Dict
+import json
 
 def make_csv_report(candidate_id: str, events: List[Dict]) -> bytes:
     df = pd.DataFrame(events)
@@ -49,7 +50,7 @@ def make_pdf_report(candidate_id: str, events: List[Dict], summary: Dict, metada
     c.setFont("Helvetica", 9)
     for e in events[-50:]:
         ts = e.get("timestamp") or e.get("frame_time") or ""
-        s = f"{ts} | {e.get('event_type')} | {e.get('extra', '')}"
+        s = f"{ts} | {e.get('event_type')} | {json.dumps(e.get('extra', {}))}"
         if y < 60:
             c.showPage()
             y = H - 50
